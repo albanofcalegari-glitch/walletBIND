@@ -1,0 +1,256 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────
+// COMPANIES & USERS
+// ─────────────────────────────────────────────
+
+model Company {
+  id        String   @id @default(uuid())
+  name      String
+  cuit      String   @unique
+  legalName String?  @map("legal_name")
+  email     String
+  phone     String?
+  address   String?
+  status    CompanyStatus @default(PENDING)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  users   User[]
+  wallets Wallet[]
+
+  @@map("companies")
+}
+
+enum CompanyStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      UserRole @default(OPERATOR)
+
+  companyId String  @map("company_id")
+  company   Company @relation(fields: [companyId], references: [id])
+
+  mfaEnabled Boolean @default(false) @map("mfa_enabled")
+  mfaSecret  String? @map("mfa_secret")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  auditLogs AuditLog[]
+
+  @@map("users")
+}
+
+enum UserRole {
+  ADMIN
+  OPERATOR
+  VIEWER
+}
+
+// ─────────────────────────────────────────────
+// WALLETS
+// ─────────────────────────────────────────────
+
+model Wallet {
+  id   String     @id @default(uuid())
+  type WalletType
+
+  // COMPANY wallets belong to a company
+  companyId String?  @map("company_id")
+  company   Company? @relation(fields: [companyId], references: [id])
+
+  // SYSTEM wallets have a code (EXTERNAL, PLATFORM)
+  systemCode String? @unique @map("system_code")
+
+  // BIND integration
+  bindAccountId String? @unique @map("bind_account_id")
+  cvu           String? @unique
+  alias         String? @unique
+  currency      Currency @default(ARS)
+
+  // Cached balance (updated atomically with ledger entries)
+  cachedBalance Decimal @default(0) @map("cached_balance") @db.Decimal(18, 2)
+
+  status WalletStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  entries LedgerEntry[]
+
+  @@map("wallets")
+}
+
+enum WalletType {
+  COMPANY
+  SYSTEM
+}
+
+enum WalletStatus {
+  ACTIVE
+  FROZEN
+  CLOSED
+}
+
+enum Currency {
+  ARS
+  USD
+}
+
+// ─────────────────────────────────────────────
+// LEDGER (double-entry core)
+// ─────────────────────────────────────────────
+
+model Transaction {
+  id             String            @id @default(uuid())
+  idempotencyKey String            @unique @map("idempotency_key")
+  type           TransactionType
+  status         TransactionStatus @default(PENDING)
+
+  description String?
+  metadata    Json?
+
+  createdAt   DateTime  @default(now()) @map("created_at")
+  completedAt DateTime? @map("completed_at")
+
+  entries  LedgerEntry[]
+  transfer Transfer?
+
+  @@index([type, status])
+  @@index([createdAt])
+  @@map("transactions")
+}
+
+enum TransactionType {
+  FUNDING     // Ingreso de fondos (externo → wallet)
+  WITHDRAWAL  // Retiro de fondos (wallet → externo)
+  TRANSFER    // Entre wallets (on-platform)
+  EXTERNAL    // Transfer a CBU/CVU externo via BIND
+  FEE         // Cobro de comision
+}
+
+enum TransactionStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  REVERSED
+}
+
+model LedgerEntry {
+  id            String    @id @default(uuid())
+  entryType     EntryType @map("entry_type")
+  amount        Decimal   @db.Decimal(18, 2)
+  balanceAfter  Decimal   @map("balance_after") @db.Decimal(18, 2)
+
+  walletId      String    @map("wallet_id")
+  transactionId String    @map("transaction_id")
+
+  wallet      Wallet      @relation(fields: [walletId], references: [id])
+  transaction Transaction @relation(fields: [transactionId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([walletId, createdAt])
+  @@index([transactionId])
+  @@map("ledger_entries")
+}
+
+enum EntryType {
+  DEBIT
+  CREDIT
+}
+
+// ─────────────────────────────────────────────
+// TRANSFERS (BIND lifecycle tracking)
+// ─────────────────────────────────────────────
+
+model Transfer {
+  id            String @id @default(uuid())
+  transactionId String @unique @map("transaction_id")
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+
+  direction TransferDirection
+
+  // Origin
+  sourceWalletId String @map("source_wallet_id")
+  sourceCvu      String? @map("source_cvu")
+
+  // Destination
+  destCbu   String? @map("dest_cbu")
+  destAlias String? @map("dest_alias")
+  destName  String? @map("dest_name")
+
+  amount   Decimal  @db.Decimal(18, 2)
+  currency Currency @default(ARS)
+  concepto String?
+
+  // BIND API tracking
+  bindOriginId   String? @unique @map("bind_origin_id")
+  bindTransferId String? @unique @map("bind_transfer_id")
+  bindStatus     String? @map("bind_status")
+  bindRawResponse Json?  @map("bind_raw_response")
+
+  status TransferStatus @default(INITIATED)
+
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  completedAt DateTime? @map("completed_at")
+
+  @@index([status, createdAt])
+  @@index([sourceWalletId])
+  @@map("transfers")
+}
+
+enum TransferDirection {
+  INBOUND   // Dinero entrando al sistema
+  OUTBOUND  // Dinero saliendo del sistema
+  INTERNAL  // Entre wallets on-platform
+}
+
+enum TransferStatus {
+  INITIATED
+  SENT_TO_BIND
+  COMPLETED
+  FAILED
+  REVERSED
+}
+
+// ─────────────────────────────────────────────
+// AUDIT LOG
+// ─────────────────────────────────────────────
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  action    String
+  entity    String
+  entityId  String   @map("entity_id")
+  detail    Json?
+  ipAddress String?  @map("ip_address")
+
+  userId String? @map("user_id")
+  user   User?   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([entity, entityId])
+  @@index([userId, createdAt])
+  @@index([createdAt])
+  @@map("audit_logs")
+}

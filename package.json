@@ -1,0 +1,35 @@
+{
+  "name": "wallet-bind",
+  "version": "0.1.0",
+  "description": "Corporate wallet platform powered by BIND PSP/WaaS APIs",
+  "private": true,
+  "scripts": {
+    "test:auth": "tsx scripts/test-auth.ts",
+    "test:create-account": "tsx scripts/test-create-account.ts",
+    "test:balance": "tsx scripts/test-balance.ts",
+    "test:lookup-cvu": "tsx scripts/test-lookup-cvu.ts",
+    "test:transfer": "tsx scripts/test-transfer.ts",
+    "test:query-transfers": "tsx scripts/test-query-transfers.ts",
+    "test:movements": "tsx scripts/test-movements.ts",
+    "test:all": "tsx scripts/test-all.ts",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
+    "db:seed": "tsx prisma/seed.ts"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.2.0",
+    "axios": "^1.7.0",
+    "dotenv": "^16.4.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.2.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "@types/node": "^22.0.0"
+  }
+}
