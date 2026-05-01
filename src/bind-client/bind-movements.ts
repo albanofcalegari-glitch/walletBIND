@@ -1,5 +1,5 @@
-import type { AxiosInstance } from 'axios';
-import type { QueryMovementsParams } from './types.js';
+﻿import type { AxiosInstance } from 'axios';
+import type { QueryMovementsParams } from './types';
 
 const BASE = '/walletentidad-operaciones/v1/api/v1.201';
 

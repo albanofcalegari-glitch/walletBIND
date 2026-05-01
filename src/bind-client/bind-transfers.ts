@@ -1,9 +1,9 @@
-import type { AxiosInstance } from 'axios';
+﻿import type { AxiosInstance } from 'axios';
 import type {
   ExecuteTransferRequest,
   ExecuteTransferResponse,
   QueryTransfersParams,
-} from './types.js';
+} from './types';
 
 const TRANSFER_BASE =
   '/cvucollectentidad-financial/v1/v1.201/banks/322/accounts/owner/transaction-request-types/TRANSFER/transaction-requests';

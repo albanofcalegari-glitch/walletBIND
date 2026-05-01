@@ -1,10 +1,10 @@
-import type { AxiosInstance } from 'axios';
+﻿import type { AxiosInstance } from 'axios';
 import type {
   CreateAccountRequest,
   CreateAccountResponse,
   BalanceResponse,
   CvuLookupResponse,
-} from './types.js';
+} from './types';
 
 const BASE = '/walletentidad-cuenta/v1/api/v1.201';
 

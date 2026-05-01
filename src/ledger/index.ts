@@ -1,2 +1,2 @@
-export { LedgerService } from './ledger.service.js';
-export { TransferService } from './transfer.service.js';
+﻿export { LedgerService } from './ledger.service';
+export { TransferService } from './transfer.service';

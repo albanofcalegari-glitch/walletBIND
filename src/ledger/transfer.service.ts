@@ -1,7 +1,7 @@
-import { PrismaClient, TransferDirection, TransferStatus, Currency } from '@prisma/client';
-import { LedgerService } from './ledger.service.js';
-import { BindClient } from '../bind-client/index.js';
-import type { TransferConcepto } from '../bind-client/types.js';
+﻿import { PrismaClient, TransferDirection, TransferStatus, Currency } from '@prisma/client';
+import { LedgerService } from './ledger.service';
+import { BindClient } from '../bind-client/index';
+import type { TransferConcepto } from '../bind-client/types';
 
 interface FundWalletInput {
   walletId: string;

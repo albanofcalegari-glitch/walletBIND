@@ -1,5 +1,5 @@
-import axios from 'axios';
-import type { BindAuthConfig, BindTokenResponse } from './types.js';
+﻿import axios from 'axios';
+import type { BindAuthConfig, BindTokenResponse } from './types';
 
 export class BindAuth {
   private token: string | null = null;

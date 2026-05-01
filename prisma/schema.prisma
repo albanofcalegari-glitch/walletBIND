@@ -52,7 +52,8 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  auditLogs AuditLog[]
+  auditLogs    AuditLog[]
+  assignedCards Card[]
 
   @@map("users")
 }
@@ -92,7 +93,9 @@ model Wallet {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  entries LedgerEntry[]
+  entries        LedgerEntry[]
+  cards          Card[]
+  cryptoHoldings CryptoHolding[]
 
   @@map("wallets")
 }
@@ -111,6 +114,87 @@ enum WalletStatus {
 enum Currency {
   ARS
   USD
+}
+
+// ─────────────────────────────────────────────
+// CARDS (tarjetas corporativas)
+// ─────────────────────────────────────────────
+
+model Card {
+  id       String @id @default(uuid())
+  walletId String @map("wallet_id")
+  wallet   Wallet @relation(fields: [walletId], references: [id])
+
+  // Card details
+  lastFour    String    @map("last_four")
+  brand       CardBrand
+  cardType    CardType  @map("card_type")
+  cardName    String    @map("card_name")
+
+  // Assigned employee
+  holderName  String    @map("holder_name")
+  holderEmail String?   @map("holder_email")
+  assignedTo  String?   @map("assigned_to")
+  assignedUser User?    @relation(fields: [assignedTo], references: [id])
+
+  // Limits
+  dailyLimit   Decimal @default(0) @map("daily_limit") @db.Decimal(18, 2)
+  monthlyLimit Decimal @default(0) @map("monthly_limit") @db.Decimal(18, 2)
+  spentToday   Decimal @default(0) @map("spent_today") @db.Decimal(18, 2)
+  spentMonth   Decimal @default(0) @map("spent_month") @db.Decimal(18, 2)
+
+  // BIND integration
+  bindCardId String? @unique @map("bind_card_id")
+
+  status CardStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([walletId])
+  @@index([assignedTo])
+  @@map("cards")
+}
+
+enum CardBrand {
+  VISA
+  MASTERCARD
+}
+
+enum CardType {
+  VIRTUAL
+  PHYSICAL
+}
+
+enum CardStatus {
+  ACTIVE
+  FROZEN
+  BLOCKED
+  EXPIRED
+  CANCELLED
+}
+
+// ─────────────────────────────────────────────
+// CRYPTO HOLDINGS
+// ─────────────────────────────────────────────
+
+model CryptoHolding {
+  id       String @id @default(uuid())
+  walletId String @map("wallet_id")
+  wallet   Wallet @relation(fields: [walletId], references: [id])
+
+  symbol   String
+  amount   Decimal @db.Decimal(18, 8)
+
+  // Last known price (updated periodically via BIND API)
+  lastPrice    Decimal  @default(0) @map("last_price") @db.Decimal(18, 2)
+  lastPriceAt  DateTime? @map("last_price_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([walletId, symbol])
+  @@map("crypto_holdings")
 }
 
 // ─────────────────────────────────────────────

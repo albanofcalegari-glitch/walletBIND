@@ -1,9 +1,9 @@
-import axios, { type AxiosInstance, type AxiosError } from 'axios';
-import { BindAuth } from './bind-auth.js';
-import { BindAccounts } from './bind-accounts.js';
-import { BindTransfers } from './bind-transfers.js';
-import { BindMovements } from './bind-movements.js';
-import type { BindClientConfig } from './types.js';
+﻿import axios, { type AxiosInstance, type AxiosError } from 'axios';
+import { BindAuth } from './bind-auth';
+import { BindAccounts } from './bind-accounts';
+import { BindTransfers } from './bind-transfers';
+import { BindMovements } from './bind-movements';
+import type { BindClientConfig } from './types';
 
 const URLS = {
   staging: {
@@ -51,7 +51,7 @@ export class BindClient {
       (error: AxiosError) => {
         const status = error.response?.status;
         const data = error.response?.data;
-        console.error(`[BIND API Error] ${error.config?.method?.toUpperCase()} ${error.config?.url} → ${status}`, data);
+        console.error(`[BIND API Error] ${error.config?.method?.toUpperCase()} ${error.config?.url} â†’ ${status}`, data);
         throw error;
       },
     );
@@ -71,8 +71,8 @@ export class BindClient {
   }
 }
 
-export * from './types.js';
-export { BindAuth } from './bind-auth.js';
-export { BindAccounts } from './bind-accounts.js';
-export { BindTransfers } from './bind-transfers.js';
-export { BindMovements } from './bind-movements.js';
+export * from './types';
+export { BindAuth } from './bind-auth';
+export { BindAccounts } from './bind-accounts';
+export { BindTransfers } from './bind-transfers';
+export { BindMovements } from './bind-movements';
