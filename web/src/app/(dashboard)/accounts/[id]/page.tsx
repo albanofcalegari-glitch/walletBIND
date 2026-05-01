@@ -35,7 +35,7 @@ export default function AccountDetailPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="flex items-center gap-3">
-        <Link href="/dashboard" className="text-slate-500 hover:text-white transition-colors">
+        <Link href="/" className="text-slate-500 hover:text-white transition-colors">
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
@@ -69,6 +69,7 @@ export default function AccountDetailPage() {
                   <th className="text-left px-5 py-3 font-medium">Tipo</th>
                   <th className="text-right px-5 py-3 font-medium">Monto</th>
                   <th className="text-right px-5 py-3 font-medium">Saldo</th>
+                  <th className="text-right px-5 py-3 font-medium"></th>
                 </tr>
               </thead>
               <tbody>
@@ -83,11 +84,18 @@ export default function AccountDetailPage() {
                       {m.sign === 'credit' ? '+' : '-'}{money(Number(m.amount))}
                     </td>
                     <td className="px-5 py-3 text-sm text-right text-slate-400">{money(Number(m.balanceAfter))}</td>
+                    <td className="px-5 py-3 text-right">
+                      <button className="p-1.5 text-slate-500 hover:text-white rounded-lg hover:bg-slate-800 transition-colors" title="Descargar comprobante">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                      </button>
+                    </td>
                   </tr>
                 ))}
                 {movements.data.length === 0 && (
                   <tr>
-                    <td colSpan={5} className="px-5 py-8 text-center text-slate-500">Sin movimientos</td>
+                    <td colSpan={6} className="px-5 py-8 text-center text-slate-500">Sin movimientos</td>
                   </tr>
                 )}
               </tbody>
