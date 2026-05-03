@@ -12,9 +12,9 @@ export default function TransfersPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold text-white">Transferencias</h1>
+      <h1 className="text-2xl font-bold text-surface-900 dark:text-white">Transferencias</h1>
 
-      <div className="flex gap-1 bg-slate-900 p-1 rounded-lg w-fit">
+      <div className="flex gap-1 bg-surface-100 dark:bg-surface-900 p-1 rounded-lg w-fit">
         {([
           { key: 'send', label: 'Enviar' },
           { key: 'scheduled', label: 'Programadas' },
@@ -23,7 +23,7 @@ export default function TransfersPage() {
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`px-4 py-2 text-sm rounded-md font-medium transition-colors ${tab === t.key ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'}`}
+            className={`px-4 py-2 text-sm rounded-md font-medium transition-colors ${tab === t.key ? 'bg-brand-600 text-white' : 'text-surface-500 hover:text-surface-900 dark:hover:text-white'}`}
           >
             {t.label}
           </button>
@@ -88,25 +88,23 @@ function SendTransfer() {
     }
   };
 
+  const inputCls = "w-full px-4 py-2.5 bg-surface-100 dark:bg-surface-800 border border-surface-300 dark:border-surface-700 rounded-lg text-surface-900 dark:text-white placeholder-surface-400 focus:outline-none focus:ring-2 focus:ring-brand-500";
+
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+    <div className="bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-2xl p-6">
       <div className="flex gap-4 mb-6">
         {(['external', 'internal'] as TransferType[]).map((t) => (
           <label key={t} className="flex items-center gap-2 cursor-pointer">
-            <input type="radio" name="type" checked={type === t} onChange={() => setType(t)} className="accent-blue-500" />
-            <span className="text-sm text-slate-300">{t === 'external' ? 'A CBU/CVU externo' : 'Entre cuentas'}</span>
+            <input type="radio" name="type" checked={type === t} onChange={() => setType(t)} className="accent-brand-500" />
+            <span className="text-sm text-surface-600 dark:text-surface-300">{t === 'external' ? 'A CBU/CVU externo' : 'Entre cuentas'}</span>
           </label>
         ))}
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm text-slate-400 mb-1">Cuenta origen</label>
-          <select
-            value={fromWalletId}
-            onChange={(e) => setFromWalletId(e.target.value)}
-            className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
+          <label className="block text-sm text-surface-500 mb-1">Cuenta origen</label>
+          <select value={fromWalletId} onChange={(e) => setFromWalletId(e.target.value)} className={inputCls}>
             {accounts.map((a) => (
               <option key={a.id} value={a.id}>{a.alias || a.cvu} — {money(Number(a.cachedBalance), a.currency)}</option>
             ))}
@@ -116,23 +114,12 @@ function SendTransfer() {
         {type === 'external' ? (
           <>
             <div>
-              <label className="block text-sm text-slate-400 mb-1">CBU/CVU destino</label>
-              <input
-                type="text"
-                value={destCbu}
-                onChange={(e) => setDestCbu(e.target.value)}
-                className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="0000000000000000000000"
-                required
-              />
+              <label className="block text-sm text-surface-500 mb-1">CBU/CVU destino</label>
+              <input type="text" value={destCbu} onChange={(e) => setDestCbu(e.target.value)} className={inputCls} placeholder="0000000000000000000000" required />
             </div>
             <div>
-              <label className="block text-sm text-slate-400 mb-1">Concepto</label>
-              <select
-                value={concepto}
-                onChange={(e) => setConcepto(e.target.value)}
-                className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
+              <label className="block text-sm text-surface-500 mb-1">Concepto</label>
+              <select value={concepto} onChange={(e) => setConcepto(e.target.value)} className={inputCls}>
                 <option value="VAR">Varios</option>
                 <option value="FAC">Factura</option>
                 <option value="HAB">Haberes</option>
@@ -147,12 +134,8 @@ function SendTransfer() {
           </>
         ) : (
           <div>
-            <label className="block text-sm text-slate-400 mb-1">Cuenta destino</label>
-            <select
-              value={toWalletId}
-              onChange={(e) => setToWalletId(e.target.value)}
-              className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
+            <label className="block text-sm text-surface-500 mb-1">Cuenta destino</label>
+            <select value={toWalletId} onChange={(e) => setToWalletId(e.target.value)} className={inputCls}>
               <option value="">Selecciona una cuenta</option>
               {accounts.filter(a => a.id !== fromWalletId).map((a) => (
                 <option key={a.id} value={a.id}>{a.alias || a.cvu}</option>
@@ -162,36 +145,21 @@ function SendTransfer() {
         )}
 
         <div>
-          <label className="block text-sm text-slate-400 mb-1">Monto</label>
-          <input
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="0.00"
-            min="0.01"
-            step="0.01"
-            required
-          />
+          <label className="block text-sm text-surface-500 mb-1">Monto</label>
+          <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} className={inputCls} placeholder="0.00" min="0.01" step="0.01" required />
         </div>
 
         <div>
-          <label className="block text-sm text-slate-400 mb-1">Descripcion (opcional)</label>
-          <input
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Pago proveedor, haberes, etc."
-          />
+          <label className="block text-sm text-surface-500 mb-1">Descripcion (opcional)</label>
+          <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} className={inputCls} placeholder="Pago proveedor, haberes, etc." />
         </div>
 
         {error && (
-          <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">{error}</div>
+          <div className="p-3 bg-danger-500/10 border border-danger-500/20 rounded-lg text-danger-400 text-sm">{error}</div>
         )}
 
         {result && (
-          <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-lg text-green-400 text-sm">
+          <div className="p-3 bg-success-500/10 border border-success-500/20 rounded-lg text-success-400 text-sm">
             Transferencia completada (ID: {result.id})
           </div>
         )}
@@ -199,7 +167,7 @@ function SendTransfer() {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:opacity-50 text-white font-medium rounded-lg transition-colors"
+          className="w-full py-3 bg-brand-600 hover:bg-brand-700 disabled:bg-brand-800 disabled:opacity-50 text-white font-medium rounded-lg transition-colors"
         >
           {submitting ? 'Enviando...' : 'Transferir'}
         </button>
@@ -221,12 +189,14 @@ function ScheduledTransfers() {
     setScheduled(scheduled.map(s => s.id === id ? { ...s, active: !s.active } : s));
   };
 
+  const inputCls = "w-full px-4 py-2.5 bg-surface-100 dark:bg-surface-800 border border-surface-300 dark:border-surface-700 rounded-lg text-surface-900 dark:text-white placeholder-surface-400 focus:outline-none focus:ring-2 focus:ring-brand-500";
+
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
         <button
           onClick={() => setShowCreate(!showCreate)}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium rounded-lg transition-colors"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -236,10 +206,10 @@ function ScheduledTransfers() {
       </div>
 
       {showCreate && (
-        <div className="bg-slate-900 border border-blue-500/30 rounded-2xl p-6 space-y-4">
+        <div className="bg-white dark:bg-surface-900 border border-brand-500/30 rounded-2xl p-6 space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-white">Nueva transferencia programada</h3>
-            <button onClick={() => setShowCreate(false)} className="text-slate-500 hover:text-white">
+            <h3 className="text-lg font-semibold text-surface-900 dark:text-white">Nueva transferencia programada</h3>
+            <button onClick={() => setShowCreate(false)} className="text-surface-400 hover:text-surface-900 dark:hover:text-white">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -247,33 +217,33 @@ function ScheduledTransfers() {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm text-slate-400 mb-1">Destinatario</label>
-              <input type="text" className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nombre o razon social" />
+              <label className="block text-sm text-surface-500 mb-1">Destinatario</label>
+              <input type="text" className={inputCls} placeholder="Nombre o razon social" />
             </div>
             <div>
-              <label className="block text-sm text-slate-400 mb-1">CBU/CVU destino</label>
-              <input type="text" className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="0000000000000000000000" />
+              <label className="block text-sm text-surface-500 mb-1">CBU/CVU destino</label>
+              <input type="text" className={inputCls} placeholder="0000000000000000000000" />
             </div>
           </div>
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm text-slate-400 mb-1">Monto</label>
-              <input type="number" className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="0.00" />
+              <label className="block text-sm text-surface-500 mb-1">Monto</label>
+              <input type="number" className={inputCls} placeholder="0.00" />
             </div>
             <div>
-              <label className="block text-sm text-slate-400 mb-1">Frecuencia</label>
-              <select className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <label className="block text-sm text-surface-500 mb-1">Frecuencia</label>
+              <select className={inputCls}>
                 <option>Semanal</option>
                 <option>Quincenal</option>
                 <option>Mensual</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm text-slate-400 mb-1">Primer envio</label>
-              <input type="date" className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <label className="block text-sm text-surface-500 mb-1">Primer envio</label>
+              <input type="date" className={inputCls} />
             </div>
           </div>
-          <button className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">
+          <button className="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-lg transition-colors">
             Programar
           </button>
         </div>
@@ -281,17 +251,17 @@ function ScheduledTransfers() {
 
       <div className="space-y-3">
         {scheduled.map((s) => (
-          <div key={s.id} className={`bg-slate-900 border rounded-xl p-5 transition-colors ${s.active ? 'border-slate-800' : 'border-slate-800/50 opacity-60'}`}>
+          <div key={s.id} className={`bg-white dark:bg-surface-900 border rounded-xl p-5 transition-colors ${s.active ? 'border-surface-200 dark:border-surface-800' : 'border-surface-200/50 dark:border-surface-800/50 opacity-60'}`}>
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-white font-medium">{s.dest}</p>
-                <p className="text-xs text-slate-500 font-mono mt-0.5">CBU ...{s.cbu.slice(-6)}</p>
+                <p className="text-surface-900 dark:text-white font-medium">{s.dest}</p>
+                <p className="text-xs text-surface-400 font-mono mt-0.5">CBU ...{s.cbu.slice(-6)}</p>
               </div>
               <div className="flex items-center gap-3">
-                <p className="text-lg font-bold text-white">{money(s.amount)}</p>
+                <p className="text-lg font-bold text-surface-900 dark:text-white">{money(s.amount)}</p>
                 <button
                   onClick={() => toggleActive(s.id)}
-                  className={`relative w-11 h-6 rounded-full transition-colors ${s.active ? 'bg-blue-600' : 'bg-slate-700'}`}
+                  className={`relative w-11 h-6 rounded-full transition-colors ${s.active ? 'bg-brand-600' : 'bg-surface-300 dark:bg-surface-700'}`}
                 >
                   <span className="absolute top-0.5 w-5 h-5 bg-white rounded-full transition-transform"
                     style={{ left: s.active ? '22px' : '2px' }}
@@ -299,7 +269,7 @@ function ScheduledTransfers() {
                 </button>
               </div>
             </div>
-            <div className="mt-3 flex items-center gap-4 text-xs text-slate-500">
+            <div className="mt-3 flex items-center gap-4 text-xs text-surface-400">
               <span>{s.frequency}</span>
               <span>&middot;</span>
               <span>Proximo: {s.nextDate}</span>
@@ -322,22 +292,22 @@ function TransferHistory() {
   }, []);
 
   if (loading) {
-    return <div className="flex items-center justify-center h-32"><div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500" /></div>;
+    return <div className="flex items-center justify-center h-32"><div className="animate-spin rounded-full h-6 w-6 border-b-2 border-brand-500" /></div>;
   }
 
   if (!transfers?.data?.length) {
     return (
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center text-slate-500">
+      <div className="bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-2xl p-8 text-center text-surface-400">
         No hay transferencias registradas
       </div>
     );
   }
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+    <div className="bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-2xl overflow-hidden">
       <table className="w-full">
         <thead>
-          <tr className="border-b border-slate-800 text-xs text-slate-500">
+          <tr className="border-b border-surface-100 dark:border-surface-800 text-xs text-surface-400">
             <th className="text-left px-5 py-3 font-medium">Fecha</th>
             <th className="text-left px-5 py-3 font-medium">Tipo</th>
             <th className="text-left px-5 py-3 font-medium">Descripcion</th>
@@ -349,31 +319,31 @@ function TransferHistory() {
         </thead>
         <tbody>
           {transfers.data.map((t: any) => (
-            <tr key={t.id} className="border-b border-slate-800/50 hover:bg-slate-800/30">
-              <td className="px-5 py-3 text-sm text-slate-400">{fullDate(t.createdAt)}</td>
+            <tr key={t.id} className="border-b border-surface-100/50 dark:border-surface-800/50 hover:bg-surface-50 dark:hover:bg-surface-800/40">
+              <td className="px-5 py-3 text-sm text-surface-500">{fullDate(t.createdAt)}</td>
               <td className="px-5 py-3">
                 <span className={`text-xs px-2 py-0.5 rounded-full ${
-                  t.direction === 'INTERNAL' ? 'bg-blue-500/10 text-blue-400' :
-                  t.direction === 'OUTBOUND' ? 'bg-orange-500/10 text-orange-400' :
-                  'bg-green-500/10 text-green-400'
+                  t.direction === 'INTERNAL' ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400' :
+                  t.direction === 'OUTBOUND' ? 'bg-orange-500/10 text-orange-600 dark:text-orange-400' :
+                  'bg-success-500/10 text-success-600 dark:text-success-400'
                 }`}>
                   {t.direction === 'INTERNAL' ? 'Interna' : t.direction === 'OUTBOUND' ? 'Saliente' : 'Entrante'}
                 </span>
               </td>
-              <td className="px-5 py-3 text-sm text-white">{t.transaction?.description || '-'}</td>
-              <td className="px-5 py-3 text-xs text-slate-500 font-mono">{t.destCbu ? `CBU ...${t.destCbu.slice(-6)}` : '-'}</td>
-              <td className="px-5 py-3 text-sm text-right font-medium text-white">{money(Number(t.amount), t.currency)}</td>
+              <td className="px-5 py-3 text-sm text-surface-900 dark:text-white">{t.transaction?.description || '-'}</td>
+              <td className="px-5 py-3 text-xs text-surface-400 font-mono">{t.destCbu ? `CBU ...${t.destCbu.slice(-6)}` : '-'}</td>
+              <td className="px-5 py-3 text-sm text-right font-medium text-surface-900 dark:text-white">{money(Number(t.amount), t.currency)}</td>
               <td className="px-5 py-3">
                 <span className={`text-xs px-2 py-0.5 rounded-full ${
-                  t.status === 'COMPLETED' ? 'bg-green-500/10 text-green-400' :
-                  t.status === 'FAILED' ? 'bg-red-500/10 text-red-400' :
-                  'bg-yellow-500/10 text-yellow-400'
+                  t.status === 'COMPLETED' ? 'bg-success-500/10 text-success-600 dark:text-success-400' :
+                  t.status === 'FAILED' ? 'bg-danger-500/10 text-danger-500' :
+                  'bg-yellow-500/10 text-yellow-600 dark:text-yellow-400'
                 }`}>
                   {t.status}
                 </span>
               </td>
               <td className="px-5 py-3 text-right">
-                <button className="p-1.5 text-slate-500 hover:text-white rounded-lg hover:bg-slate-800 transition-colors" title="Descargar comprobante">
+                <button className="p-1.5 text-surface-400 hover:text-surface-900 dark:hover:text-white rounded-lg hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors" title="Descargar comprobante">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>

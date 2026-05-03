@@ -40,15 +40,15 @@ export default function AnalyticsPage() {
     <div className="max-w-6xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Analytics</h1>
-          <p className="text-sm text-slate-400 mt-1">Analisis de gastos e ingresos</p>
+          <h1 className="text-2xl font-bold text-surface-900 dark:text-white">Analytics</h1>
+          <p className="text-sm text-surface-500 mt-1">Analisis de gastos e ingresos</p>
         </div>
-        <div className="flex gap-1 bg-slate-900 p-1 rounded-lg">
+        <div className="flex gap-1 bg-surface-100 dark:bg-surface-900 p-1 rounded-lg">
           {([['7d', '7 dias'], ['30d', '30 dias'], ['90d', '90 dias'], ['12m', '12 meses']] as [Period, string][]).map(([key, label]) => (
             <button
               key={key}
               onClick={() => setPeriod(key)}
-              className={`px-3 py-1.5 text-xs rounded-md font-medium transition-colors ${period === key ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'}`}
+              className={`px-3 py-1.5 text-xs rounded-md font-medium transition-colors ${period === key ? 'bg-brand-600 text-white' : 'text-surface-500 hover:text-surface-900 dark:hover:text-white'}`}
             >
               {label}
             </button>
@@ -66,14 +66,14 @@ export default function AnalyticsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Monthly bar chart */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-          <h2 className="text-lg font-semibold text-white mb-4">Ingresos vs Egresos</h2>
+        <div className="bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-2xl p-6">
+          <h2 className="text-lg font-semibold text-surface-900 dark:text-white mb-4">Ingresos vs Egresos</h2>
           <div className="space-y-3">
             {MONTHLY_DATA.map((m) => (
               <div key={m.month} className="space-y-1">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-slate-400 w-8">{m.month}</span>
-                  <span className="text-slate-500">{money(m.income)} / {money(m.expense)}</span>
+                  <span className="text-surface-500 w-8">{m.month}</span>
+                  <span className="text-surface-400">{money(m.income)} / {money(m.expense)}</span>
                 </div>
                 <div className="flex gap-1 h-4">
                   <div
@@ -90,15 +90,15 @@ export default function AnalyticsPage() {
               </div>
             ))}
           </div>
-          <div className="flex gap-4 mt-4 text-xs">
+          <div className="flex gap-4 mt-4 text-xs text-surface-600 dark:text-surface-300">
             <span className="flex items-center gap-1.5"><span className="w-3 h-3 bg-green-500/60 rounded-sm" /> Ingresos</span>
             <span className="flex items-center gap-1.5"><span className="w-3 h-3 bg-red-500/40 rounded-sm" /> Egresos</span>
           </div>
         </div>
 
         {/* Category breakdown */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-          <h2 className="text-lg font-semibold text-white mb-4">Gastos por Categoria</h2>
+        <div className="bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-2xl p-6">
+          <h2 className="text-lg font-semibold text-surface-900 dark:text-white mb-4">Gastos por Categoria</h2>
           <div className="flex h-4 rounded-full overflow-hidden mb-6">
             {CATEGORIES.map((cat) => (
               <div key={cat.name} className={`${cat.color} transition-all`} style={{ width: `${cat.pct}%` }} />
@@ -109,11 +109,11 @@ export default function AnalyticsPage() {
               <div key={cat.name} className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className={`w-3 h-3 rounded-full ${cat.color}`} />
-                  <span className="text-sm text-slate-300">{cat.name}</span>
+                  <span className="text-sm text-surface-600 dark:text-surface-300">{cat.name}</span>
                 </div>
                 <div className="text-right">
-                  <span className="text-sm font-medium text-white">{money(cat.amount)}</span>
-                  <span className="text-xs text-slate-500 ml-2">{cat.pct}%</span>
+                  <span className="text-sm font-medium text-surface-900 dark:text-white">{money(cat.amount)}</span>
+                  <span className="text-xs text-surface-400 ml-2">{cat.pct}%</span>
                 </div>
               </div>
             ))}
@@ -122,8 +122,8 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Card spending */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-        <h2 className="text-lg font-semibold text-white mb-4">Consumo por Tarjeta</h2>
+      <div className="bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-2xl p-6">
+        <h2 className="text-lg font-semibold text-surface-900 dark:text-white mb-4">Consumo por Tarjeta</h2>
         <div className="space-y-4">
           {CARD_SPENDING.map((card) => {
             const pct = (card.spent / card.limit) * 100;
@@ -131,12 +131,12 @@ export default function AnalyticsPage() {
               <div key={card.card}>
                 <div className="flex items-center justify-between mb-1.5">
                   <div className="flex items-center gap-3">
-                    <span className="font-mono text-sm text-white">{card.card}</span>
-                    <span className="text-xs text-slate-500">{card.holder}</span>
+                    <span className="font-mono text-sm text-surface-900 dark:text-white">{card.card}</span>
+                    <span className="text-xs text-surface-400">{card.holder}</span>
                   </div>
-                  <span className="text-sm font-medium text-white">{money(card.spent)} <span className="text-slate-500">/ {money(card.limit)}</span></span>
+                  <span className="text-sm font-medium text-surface-900 dark:text-white">{money(card.spent)} <span className="text-surface-400">/ {money(card.limit)}</span></span>
                 </div>
-                <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+                <div className="h-2 bg-surface-200 dark:bg-surface-800 rounded-full overflow-hidden">
                   <div
                     className={`h-full rounded-full transition-all ${pct > 80 ? 'bg-red-500' : pct > 50 ? 'bg-yellow-500' : 'bg-blue-500'}`}
                     style={{ width: `${Math.min(pct, 100)}%` }}
@@ -150,10 +150,10 @@ export default function AnalyticsPage() {
 
       {/* Export */}
       <div className="flex justify-end gap-3">
-        <button className="px-4 py-2 text-sm bg-slate-800 text-slate-300 rounded-lg hover:bg-slate-700 transition-colors">
+        <button className="px-4 py-2 text-sm bg-surface-200 dark:bg-surface-800 text-surface-600 dark:text-surface-300 rounded-lg hover:bg-surface-300 dark:hover:bg-surface-700 transition-colors">
           Exportar CSV
         </button>
-        <button className="px-4 py-2 text-sm bg-slate-800 text-slate-300 rounded-lg hover:bg-slate-700 transition-colors">
+        <button className="px-4 py-2 text-sm bg-surface-200 dark:bg-surface-800 text-surface-600 dark:text-surface-300 rounded-lg hover:bg-surface-300 dark:hover:bg-surface-700 transition-colors">
           Exportar PDF
         </button>
       </div>
@@ -163,9 +163,9 @@ export default function AnalyticsPage() {
 
 function KpiCard({ label, value, change, positive }: { label: string; value: string; change: string; positive: boolean }) {
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
-      <p className="text-xs text-slate-500 uppercase tracking-wider">{label}</p>
-      <p className="text-2xl font-bold text-white mt-1">{value}</p>
+    <div className="bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-xl p-5">
+      <p className="text-xs text-surface-400 uppercase tracking-wider">{label}</p>
+      <p className="text-2xl font-bold text-surface-900 dark:text-white mt-1">{value}</p>
       <p className={`text-xs mt-1 ${positive ? 'text-green-400' : 'text-red-400'}`}>{change} vs periodo anterior</p>
     </div>
   );

@@ -44,8 +44,8 @@ export default function ServicesPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Pago de Servicios</h1>
-        <p className="text-sm text-slate-400 mt-1">Paga tus facturas de servicios, impuestos y mas</p>
+        <h1 className="text-2xl font-bold text-surface-900 dark:text-white">Pago de Servicios</h1>
+        <p className="text-sm text-surface-500 mt-1">Paga tus facturas de servicios, impuestos y mas</p>
       </div>
 
       {/* Categories */}
@@ -56,21 +56,21 @@ export default function ServicesPage() {
             onClick={() => setCategory(category === cat.key ? null : cat.key)}
             className={`p-4 rounded-xl border text-left transition-colors ${
               category === cat.key
-                ? 'border-blue-500 bg-blue-500/10'
-                : 'border-slate-800 bg-slate-900 hover:border-slate-700'
+                ? 'border-brand-500 bg-brand-500/10'
+                : 'border-surface-200 dark:border-surface-800 bg-white dark:bg-surface-900 hover:border-surface-300 dark:hover:border-surface-700'
             }`}
           >
-            <svg className={`w-6 h-6 mb-2 ${category === cat.key ? 'text-blue-400' : 'text-slate-500'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <svg className={`w-6 h-6 mb-2 ${category === cat.key ? 'text-brand-600 dark:text-brand-400' : 'text-surface-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d={cat.icon} />
             </svg>
-            <p className={`text-sm font-medium ${category === cat.key ? 'text-blue-400' : 'text-slate-300'}`}>{cat.label}</p>
+            <p className={`text-sm font-medium ${category === cat.key ? 'text-brand-600 dark:text-brand-400' : 'text-surface-600 dark:text-surface-300'}`}>{cat.label}</p>
           </button>
         ))}
       </div>
 
       {/* Search */}
       <div className="relative">
-        <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
         <input
@@ -78,7 +78,7 @@ export default function ServicesPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Buscar servicio..."
-          className="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-slate-800 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full pl-10 pr-4 py-2.5 bg-surface-100 dark:bg-surface-800 border border-surface-300 dark:border-surface-700 rounded-lg text-surface-900 dark:text-white placeholder-surface-400 focus:outline-none focus:ring-2 focus:ring-brand-500"
         />
       </div>
 
@@ -88,14 +88,14 @@ export default function ServicesPage() {
           <button
             key={service.id}
             onClick={() => setSelectedService(service)}
-            className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex items-center gap-4 hover:border-slate-700 transition-colors text-left"
+            className="bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-xl p-4 flex items-center gap-4 hover:border-surface-300 dark:hover:border-surface-700 transition-colors text-left"
           >
-            <div className="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-400">
+            <div className="w-10 h-10 rounded-lg bg-surface-200 dark:bg-surface-800 flex items-center justify-center text-xs font-bold text-surface-500">
               {service.icon}
             </div>
             <div>
-              <p className="text-sm font-medium text-white">{service.name}</p>
-              <p className="text-xs text-slate-500">{service.description}</p>
+              <p className="text-sm font-medium text-surface-900 dark:text-white">{service.name}</p>
+              <p className="text-xs text-surface-400">{service.description}</p>
             </div>
           </button>
         ))}
@@ -136,44 +136,44 @@ function PayService({ service, onBack }: { service: typeof SERVICES[0]; onBack: 
 
   return (
     <div className="max-w-lg mx-auto space-y-6">
-      <button onClick={onBack} className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-sm">
+      <button onClick={onBack} className="flex items-center gap-2 text-surface-400 hover:text-surface-900 dark:hover:text-white transition-colors text-sm">
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
         Volver a servicios
       </button>
 
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+      <div className="bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-2xl p-6">
         <div className="flex items-center gap-4 mb-6">
-          <div className="w-12 h-12 rounded-lg bg-slate-800 flex items-center justify-center text-sm font-bold text-slate-400">
+          <div className="w-12 h-12 rounded-lg bg-surface-200 dark:bg-surface-800 flex items-center justify-center text-sm font-bold text-surface-500">
             {service.icon}
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-white">{service.name}</h2>
-            <p className="text-sm text-slate-500">{service.description}</p>
+            <h2 className="text-lg font-semibold text-surface-900 dark:text-white">{service.name}</h2>
+            <p className="text-sm text-surface-400">{service.description}</p>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm text-slate-400 mb-1">Codigo de pago / Nro de cliente</label>
+            <label className="block text-sm text-surface-500 mb-1">Codigo de pago / Nro de cliente</label>
             <input
               type="text"
               value={invoiceCode}
               onChange={(e) => setInvoiceCode(e.target.value)}
-              className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2.5 bg-surface-100 dark:bg-surface-800 border border-surface-300 dark:border-surface-700 rounded-lg text-surface-900 dark:text-white placeholder-surface-400 focus:outline-none focus:ring-2 focus:ring-brand-500"
               placeholder="Ingresa el codigo de la factura"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm text-slate-400 mb-1">Monto</label>
+            <label className="block text-sm text-surface-500 mb-1">Monto</label>
             <input
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2.5 bg-surface-100 dark:bg-surface-800 border border-surface-300 dark:border-surface-700 rounded-lg text-surface-900 dark:text-white placeholder-surface-400 focus:outline-none focus:ring-2 focus:ring-brand-500"
               placeholder="0.00"
               min="0.01"
               step="0.01"
@@ -182,11 +182,11 @@ function PayService({ service, onBack }: { service: typeof SERVICES[0]; onBack: 
           </div>
 
           <div>
-            <label className="block text-sm text-slate-400 mb-1">Cuenta a debitar</label>
+            <label className="block text-sm text-surface-500 mb-1">Cuenta a debitar</label>
             <select
               value={fromWalletId}
               onChange={(e) => setFromWalletId(e.target.value)}
-              className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2.5 bg-surface-100 dark:bg-surface-800 border border-surface-300 dark:border-surface-700 rounded-lg text-surface-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
             >
               {accounts.map((a) => (
                 <option key={a.id} value={a.id}>{a.alias || a.cvu} — {money(Number(a.cachedBalance), a.currency)}</option>
@@ -204,7 +204,7 @@ function PayService({ service, onBack }: { service: typeof SERVICES[0]; onBack: 
           <button
             type="submit"
             disabled={submitting || result}
-            className="w-full py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:opacity-50 text-white font-medium rounded-lg transition-colors"
+            className="w-full py-3 bg-brand-600 hover:bg-brand-700 disabled:bg-brand-800 disabled:opacity-50 text-white font-medium rounded-lg transition-colors"
           >
             {submitting ? 'Procesando...' : result ? 'Pagado' : `Pagar ${service.name}`}
           </button>

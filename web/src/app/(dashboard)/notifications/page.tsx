@@ -71,23 +71,23 @@ export default function NotificationsPage() {
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Notificaciones y Alertas</h1>
-          <p className="text-sm text-slate-400 mt-1">Configura alertas y revisa las notificaciones</p>
+          <h1 className="text-2xl font-bold text-surface-900 dark:text-white">Notificaciones y Alertas</h1>
+          <p className="text-sm text-surface-500 mt-1">Configura alertas y revisa las notificaciones</p>
         </div>
         {tab === 'notifications' && unreadCount > 0 && (
           <button
             onClick={markAllRead}
-            className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+            className="text-sm text-brand-600 dark:text-brand-400 hover:text-brand-500 dark:hover:text-brand-300 transition-colors"
           >
             Marcar todas como leidas
           </button>
         )}
       </div>
 
-      <div className="flex gap-1 bg-slate-900 p-1 rounded-lg w-fit">
+      <div className="flex gap-1 bg-surface-100 dark:bg-surface-900 p-1 rounded-lg w-fit">
         <button
           onClick={() => setTab('notifications')}
-          className={`px-4 py-2 text-sm rounded-md font-medium transition-colors flex items-center gap-2 ${tab === 'notifications' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'}`}
+          className={`px-4 py-2 text-sm rounded-md font-medium transition-colors flex items-center gap-2 ${tab === 'notifications' ? 'bg-brand-600 text-white' : 'text-surface-500 hover:text-surface-900 dark:hover:text-white'}`}
         >
           Notificaciones
           {unreadCount > 0 && (
@@ -96,7 +96,7 @@ export default function NotificationsPage() {
         </button>
         <button
           onClick={() => setTab('rules')}
-          className={`px-4 py-2 text-sm rounded-md font-medium transition-colors ${tab === 'rules' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'}`}
+          className={`px-4 py-2 text-sm rounded-md font-medium transition-colors ${tab === 'rules' ? 'bg-brand-600 text-white' : 'text-surface-500 hover:text-surface-900 dark:hover:text-white'}`}
         >
           Configurar alertas
         </button>
@@ -120,8 +120,8 @@ export default function NotificationsPage() {
             return (
               <div
                 key={notif.id}
-                className={`bg-slate-900 border rounded-xl p-4 flex items-start gap-4 transition-colors ${
-                  notif.read ? 'border-slate-800/50 opacity-60' : 'border-slate-700'
+                className={`bg-white dark:bg-surface-900 border rounded-xl p-4 flex items-start gap-4 transition-colors ${
+                  notif.read ? 'border-surface-200/50 dark:border-surface-800/50 opacity-60' : 'border-surface-300 dark:border-surface-700'
                 }`}
               >
                 <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${iconColors[notif.type]}`}>
@@ -131,10 +131,10 @@ export default function NotificationsPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <p className={`text-sm font-medium ${notif.read ? 'text-slate-400' : 'text-white'}`}>{notif.title}</p>
-                    <span className="text-xs text-slate-600 shrink-0 ml-2">{notif.time}</span>
+                    <p className={`text-sm font-medium ${notif.read ? 'text-surface-500' : 'text-surface-900 dark:text-white'}`}>{notif.title}</p>
+                    <span className="text-xs text-surface-400 shrink-0 ml-2">{notif.time}</span>
                   </div>
-                  <p className="text-xs text-slate-500 mt-0.5">{notif.message}</p>
+                  <p className="text-xs text-surface-400 mt-0.5">{notif.message}</p>
                 </div>
                 {!notif.read && <span className="w-2 h-2 bg-blue-500 rounded-full shrink-0 mt-2" />}
               </div>
@@ -144,15 +144,15 @@ export default function NotificationsPage() {
       ) : (
         <div className="space-y-3">
           {rules.map((rule) => (
-            <div key={rule.id} className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+            <div key={rule.id} className="bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-xl p-5">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-white font-medium">{rule.label}</p>
-                  <p className="text-xs text-slate-500 mt-0.5">{rule.description}</p>
+                  <p className="text-surface-900 dark:text-white font-medium">{rule.label}</p>
+                  <p className="text-xs text-surface-400 mt-0.5">{rule.description}</p>
                 </div>
                 <button
                   onClick={() => toggleRule(rule.id)}
-                  className={`relative w-11 h-6 rounded-full transition-colors ${rule.enabled ? 'bg-blue-600' : 'bg-slate-700'}`}
+                  className={`relative w-11 h-6 rounded-full transition-colors ${rule.enabled ? 'bg-brand-600' : 'bg-surface-300 dark:bg-surface-700'}`}
                 >
                   <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full transition-transform ${rule.enabled ? 'left-5.5 translate-x-0' : 'left-0.5'}`}
                     style={{ left: rule.enabled ? '22px' : '2px' }}
@@ -161,17 +161,17 @@ export default function NotificationsPage() {
               </div>
 
               {rule.enabled && (
-                <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between">
+                <div className="mt-4 pt-3 border-t border-surface-200 dark:border-surface-800 flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-slate-500">Canales:</span>
+                    <span className="text-xs text-surface-400">Canales:</span>
                     {(['email', 'push', 'sms'] as const).map((ch) => (
                       <button
                         key={ch}
                         onClick={() => toggleChannel(rule.id, ch)}
                         className={`text-xs px-2.5 py-1 rounded-lg font-medium transition-colors ${
                           rule.channels.includes(ch)
-                            ? 'bg-blue-500/10 text-blue-400 border border-blue-500/30'
-                            : 'bg-slate-800 text-slate-500 border border-slate-700'
+                            ? 'bg-brand-500/10 text-brand-600 dark:text-brand-400 border border-brand-500/30'
+                            : 'bg-surface-100 dark:bg-surface-800 text-surface-400 border border-surface-300 dark:border-surface-700'
                         }`}
                       >
                         {ch === 'email' ? 'Email' : ch === 'push' ? 'Push' : 'SMS'}
@@ -180,8 +180,8 @@ export default function NotificationsPage() {
                   </div>
                   {rule.threshold !== undefined && (
                     <div className="flex items-center gap-2">
-                      <span className="text-xs text-slate-500">Umbral:</span>
-                      <span className="text-xs text-white font-medium">{money(rule.threshold)}</span>
+                      <span className="text-xs text-surface-400">Umbral:</span>
+                      <span className="text-xs text-surface-900 dark:text-white font-medium">{money(rule.threshold)}</span>
                     </div>
                   )}
                 </div>

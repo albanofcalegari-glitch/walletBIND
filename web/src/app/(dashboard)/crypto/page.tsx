@@ -20,9 +20,9 @@ export default function CryptoPage() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold text-white">Crypto</h1>
+      <h1 className="text-2xl font-bold text-surface-900 dark:text-white">Crypto</h1>
 
-      <div className="flex gap-1 bg-slate-900 p-1 rounded-lg w-fit">
+      <div className="flex gap-1 bg-surface-100 dark:bg-surface-900 p-1 rounded-lg w-fit">
         {([
           { key: 'portfolio', label: 'Portfolio' },
           { key: 'buy', label: 'Comprar' },
@@ -32,7 +32,7 @@ export default function CryptoPage() {
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`px-4 py-2 text-sm rounded-md font-medium transition-colors ${tab === t.key ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'}`}
+            className={`px-4 py-2 text-sm rounded-md font-medium transition-colors ${tab === t.key ? 'bg-brand-600 text-white' : 'text-surface-500 hover:text-surface-900 dark:hover:text-white'}`}
           >
             {t.label}
           </button>
@@ -58,12 +58,12 @@ function Portfolio() {
   }, []);
 
   if (loading) {
-    return <div className="flex items-center justify-center h-32"><div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500" /></div>;
+    return <div className="flex items-center justify-center h-32"><div className="animate-spin rounded-full h-6 w-6 border-b-2 border-brand-500" /></div>;
   }
 
   if (holdings.length === 0) {
     return (
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center text-slate-500">
+      <div className="bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-2xl p-8 text-center text-surface-400">
         No tenes criptomonedas aun. Usa la seccion Comprar para comenzar.
       </div>
     );
@@ -73,29 +73,29 @@ function Portfolio() {
 
   return (
     <div className="space-y-4">
-      <div className="bg-slate-900 border border-purple-500/30 rounded-2xl p-6">
-        <p className="text-xs text-slate-500 uppercase tracking-wider">Valor total del portfolio</p>
-        <p className="text-3xl font-bold text-white mt-1">{money(totalArs)}</p>
+      <div className="bg-white dark:bg-surface-900 border border-brand-500/30 rounded-2xl p-6">
+        <p className="text-xs text-surface-400 uppercase tracking-wider">Valor total del portfolio</p>
+        <p className="text-3xl font-bold text-surface-900 dark:text-white mt-1">{money(totalArs)}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {holdings.map((h) => {
           const coin = COINS.find(c => c.symbol === h.symbol);
           return (
-            <div key={h.symbol} className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+            <div key={h.symbol} className="bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-xl p-5">
               <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-sm font-bold ${coin?.color || 'text-white'}`}>
+                <div className={`w-10 h-10 rounded-full bg-surface-200 dark:bg-surface-800 flex items-center justify-center text-sm font-bold ${coin?.color || 'text-surface-900 dark:text-white'}`}>
                   {h.symbol.slice(0, 2)}
                 </div>
                 <div>
-                  <p className="text-white font-semibold">{h.symbol}</p>
-                  <p className="text-xs text-slate-500">{coin?.name || h.symbol}</p>
+                  <p className="text-surface-900 dark:text-white font-semibold">{h.symbol}</p>
+                  <p className="text-xs text-surface-400">{coin?.name || h.symbol}</p>
                 </div>
               </div>
               <div className="mt-4 space-y-1">
-                <p className="text-lg font-bold text-white">{cryptoAmount(h.amount)} <span className="text-sm text-slate-500">{h.symbol}</span></p>
+                <p className="text-lg font-bold text-surface-900 dark:text-white">{cryptoAmount(h.amount)} <span className="text-sm text-surface-400">{h.symbol}</span></p>
                 <p className="text-xl font-semibold text-purple-400">{money(h.valuationArs)}</p>
-                <p className="text-xs text-slate-500">Precio: {money(h.lastPrice)}/{h.symbol}</p>
+                <p className="text-xs text-surface-400">Precio: {money(h.lastPrice)}/{h.symbol}</p>
               </div>
             </div>
           );
@@ -147,14 +147,14 @@ function BuySell({ mode }: { mode: 'buy' | 'sell' }) {
 
   return (
     <div className="max-w-lg">
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-        <h2 className="text-lg font-semibold text-white mb-4">
+      <div className="bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-2xl p-6">
+        <h2 className="text-lg font-semibold text-surface-900 dark:text-white mb-4">
           {mode === 'buy' ? 'Comprar crypto' : 'Vender crypto'}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm text-slate-400 mb-1">Moneda</label>
+            <label className="block text-sm text-surface-500 mb-1">Moneda</label>
             <div className="grid grid-cols-3 gap-2">
               {COINS.slice(0, 6).map((c) => (
                 <button
@@ -163,25 +163,25 @@ function BuySell({ mode }: { mode: 'buy' | 'sell' }) {
                   onClick={() => setCoin(c.symbol)}
                   className={`p-3 rounded-lg border text-center transition-colors ${
                     coin === c.symbol
-                      ? 'border-blue-500 bg-blue-500/10'
-                      : 'border-slate-700 bg-slate-800 hover:border-slate-600'
+                      ? 'border-brand-500 bg-brand-500/10'
+                      : 'border-surface-300 dark:border-surface-700 bg-surface-100 dark:bg-surface-800 hover:border-surface-400 dark:hover:border-surface-600'
                   }`}
                 >
                   <p className={`text-sm font-bold ${c.color}`}>{c.symbol}</p>
-                  <p className="text-xs text-slate-500 mt-0.5">{c.name}</p>
+                  <p className="text-xs text-surface-400 mt-0.5">{c.name}</p>
                 </button>
               ))}
             </div>
           </div>
 
           <div>
-            <label className="block text-sm text-slate-400 mb-1">
+            <label className="block text-sm text-surface-500 mb-1">
               {mode === 'buy' ? 'Cuenta a debitar' : 'Cuenta a acreditar'}
             </label>
             <select
               value={fromWalletId}
               onChange={(e) => setFromWalletId(e.target.value)}
-              className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2.5 bg-surface-100 dark:bg-surface-800 border border-surface-300 dark:border-surface-700 rounded-lg text-surface-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
             >
               {accounts.map((a) => (
                 <option key={a.id} value={a.id}>{a.alias || a.cvu} — {money(Number(a.cachedBalance), a.currency)}</option>
@@ -191,19 +191,19 @@ function BuySell({ mode }: { mode: 'buy' | 'sell' }) {
 
           <div>
             <div className="flex items-center justify-between mb-1">
-              <label className="text-sm text-slate-400">Monto</label>
+              <label className="text-sm text-surface-500">Monto</label>
               <div className="flex gap-1">
                 <button
                   type="button"
                   onClick={() => setAmountType('ars')}
-                  className={`text-xs px-2 py-0.5 rounded ${amountType === 'ars' ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-400'}`}
+                  className={`text-xs px-2 py-0.5 rounded ${amountType === 'ars' ? 'bg-brand-600 text-white' : 'bg-surface-200 dark:bg-surface-800 text-surface-500'}`}
                 >
                   ARS
                 </button>
                 <button
                   type="button"
                   onClick={() => setAmountType('crypto')}
-                  className={`text-xs px-2 py-0.5 rounded ${amountType === 'crypto' ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-400'}`}
+                  className={`text-xs px-2 py-0.5 rounded ${amountType === 'crypto' ? 'bg-brand-600 text-white' : 'bg-surface-200 dark:bg-surface-800 text-surface-500'}`}
                 >
                   {coin}
                 </button>
@@ -213,7 +213,7 @@ function BuySell({ mode }: { mode: 'buy' | 'sell' }) {
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2.5 bg-surface-100 dark:bg-surface-800 border border-surface-300 dark:border-surface-700 rounded-lg text-surface-900 dark:text-white placeholder-surface-400 focus:outline-none focus:ring-2 focus:ring-brand-500"
               placeholder={amountType === 'ars' ? '10000.00' : '0.001'}
               min="0"
               step="any"
@@ -277,17 +277,17 @@ function Swap() {
 
   return (
     <div className="max-w-lg">
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-        <h2 className="text-lg font-semibold text-white mb-4">Swap entre criptos</h2>
+      <div className="bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-2xl p-6">
+        <h2 className="text-lg font-semibold text-surface-900 dark:text-white mb-4">Swap entre criptos</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm text-slate-400 mb-1">De</label>
+              <label className="block text-sm text-surface-500 mb-1">De</label>
               <select
                 value={fromCoin}
                 onChange={(e) => setFromCoin(e.target.value)}
-                className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2.5 bg-surface-100 dark:bg-surface-800 border border-surface-300 dark:border-surface-700 rounded-lg text-surface-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
               >
                 {COINS.map((c) => (
                   <option key={c.symbol} value={c.symbol}>{c.symbol} - {c.name}</option>
@@ -295,11 +295,11 @@ function Swap() {
               </select>
             </div>
             <div>
-              <label className="block text-sm text-slate-400 mb-1">A</label>
+              <label className="block text-sm text-surface-500 mb-1">A</label>
               <select
                 value={toCoin}
                 onChange={(e) => setToCoin(e.target.value)}
-                className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2.5 bg-surface-100 dark:bg-surface-800 border border-surface-300 dark:border-surface-700 rounded-lg text-surface-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
               >
                 {COINS.map((c) => (
                   <option key={c.symbol} value={c.symbol}>{c.symbol} - {c.name}</option>
@@ -309,12 +309,12 @@ function Swap() {
           </div>
 
           <div>
-            <label className="block text-sm text-slate-400 mb-1">Cantidad de {fromCoin}</label>
+            <label className="block text-sm text-surface-500 mb-1">Cantidad de {fromCoin}</label>
             <input
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2.5 bg-surface-100 dark:bg-surface-800 border border-surface-300 dark:border-surface-700 rounded-lg text-surface-900 dark:text-white placeholder-surface-400 focus:outline-none focus:ring-2 focus:ring-brand-500"
               placeholder="0.00"
               min="0"
               step="any"

@@ -1,78 +1,168 @@
-'use client';
+'use client'
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useAuth } from '@/lib/auth';
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useAuth } from '@/lib/auth'
+import { useTheme } from '@/lib/theme'
+import {
+  LayoutDashboard, ArrowLeftRight, CreditCard, Bitcoin,
+  BarChart3, Building2, Users, Link2, Bell, Zap,
+  LogOut, Sun, Moon, ChevronLeft, Menu,
+} from 'lucide-react'
+import { useState } from 'react'
 
 const mainNav = [
-  { href: '/', label: 'Posicion', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
-  { href: '/transfers', label: 'Transferencias', icon: 'M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4' },
-  { href: '/cards', label: 'Tarjetas', icon: 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z' },
-  { href: '/crypto', label: 'Crypto', icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
-];
+  { href: '/', label: 'Posicion', icon: LayoutDashboard },
+  { href: '/accounts', label: 'Cuentas', icon: Building2 },
+  { href: '/transfers', label: 'Transferencias', icon: ArrowLeftRight },
+  { href: '/cards', label: 'Tarjetas', icon: CreditCard },
+  { href: '/crypto', label: 'Crypto', icon: Bitcoin },
+]
 
 const toolsNav = [
-  { href: '/analytics', label: 'Analytics', icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z' },
-  { href: '/services', label: 'Servicios', icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4' },
-  { href: '/contacts', label: 'Contactos', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z' },
-  { href: '/payment-links', label: 'Links de pago', icon: 'M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1' },
-  { href: '/notifications', label: 'Alertas', icon: 'M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9' },
-];
-
-function NavItem({ item, pathname }: { item: typeof mainNav[0]; pathname: string }) {
-  const active = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
-  return (
-    <Link
-      href={item.href}
-      className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-        active
-          ? 'bg-blue-600/20 text-blue-400'
-          : 'text-slate-400 hover:text-white hover:bg-slate-800'
-      }`}
-    >
-      <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
-      </svg>
-      {item.label}
-    </Link>
-  );
-}
+  { href: '/analytics', label: 'Analytics', icon: BarChart3 },
+  { href: '/services', label: 'Servicios', icon: Zap },
+  { href: '/contacts', label: 'Contactos', icon: Users },
+  { href: '/payment-links', label: 'Links de pago', icon: Link2 },
+  { href: '/notifications', label: 'Alertas', icon: Bell },
+]
 
 export default function Sidebar() {
-  const pathname = usePathname();
-  const { user, logout } = useAuth();
+  const pathname = usePathname()
+  const { user, logout } = useAuth()
+  const { theme, toggle } = useTheme()
+  const [collapsed, setCollapsed] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
 
-  return (
-    <aside className="w-64 bg-slate-900 border-r border-slate-800 flex flex-col min-h-screen">
-      <div className="p-6 border-b border-slate-800">
-        <h1 className="text-xl font-bold text-white">wallet<span className="text-blue-500">BIND</span></h1>
+  const initials = user?.name
+    ?.split(' ')
+    .map((w: string) => w[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase() ?? '?'
+
+  function NavItem({ item }: { item: (typeof mainNav)[0] }) {
+    const active = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)
+    const Icon = item.icon
+    return (
+      <Link
+        href={item.href}
+        onClick={() => setMobileOpen(false)}
+        className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150 ${
+          active
+            ? 'bg-brand-600 text-white shadow-lg shadow-brand-600/25'
+            : 'text-surface-500 hover:bg-surface-100 hover:text-surface-900 dark:text-surface-400 dark:hover:bg-surface-800 dark:hover:text-white'
+        } ${collapsed ? 'justify-center' : ''}`}
+        title={collapsed ? item.label : undefined}
+      >
+        <Icon size={20} className={active ? 'text-white' : 'text-surface-400 group-hover:text-brand-500'} />
+        {!collapsed && <span>{item.label}</span>}
+      </Link>
+    )
+  }
+
+  const sidebarContent = (
+    <>
+      {/* Logo */}
+      <div className={`flex items-center border-b border-surface-200 dark:border-surface-800 ${collapsed ? 'justify-center px-3 py-5' : 'justify-between px-5 py-5'}`}>
+        {collapsed ? (
+          <span className="text-xl font-extrabold text-brand-600">W</span>
+        ) : (
+          <span className="text-xl font-extrabold tracking-tight">
+            <span className="text-surface-900 dark:text-white">wallet</span>
+            <span className="text-brand-500">BIND</span>
+          </span>
+        )}
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className="hidden md:flex h-7 w-7 items-center justify-center rounded-lg text-surface-400 hover:bg-surface-100 hover:text-surface-600 dark:hover:bg-surface-800 dark:hover:text-white transition-colors"
+        >
+          <ChevronLeft size={16} className={`transition-transform duration-200 ${collapsed ? 'rotate-180' : ''}`} />
+        </button>
       </div>
 
-      <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-        {mainNav.map((item) => (
-          <NavItem key={item.href} item={item} pathname={pathname} />
+      {/* Nav */}
+      <nav className="flex-1 overflow-y-auto p-3 space-y-1">
+        {mainNav.map(item => (
+          <NavItem key={item.href} item={item} />
         ))}
 
-        <div className="pt-4 mt-4 border-t border-slate-800 space-y-1">
-          <p className="px-3 text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-2">Herramientas</p>
-          {toolsNav.map((item) => (
-            <NavItem key={item.href} item={item} pathname={pathname} />
+        <div className="pt-4 mt-4 border-t border-surface-200 dark:border-surface-800 space-y-1">
+          {!collapsed && (
+            <p className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-widest text-surface-400">
+              Herramientas
+            </p>
+          )}
+          {toolsNav.map(item => (
+            <NavItem key={item.href} item={item} />
           ))}
         </div>
       </nav>
 
-      <div className="p-4 border-t border-slate-800">
-        <div className="px-3 py-2 mb-2">
-          <p className="text-sm font-medium text-white truncate">{user?.name}</p>
-          <p className="text-xs text-slate-500 truncate">{user?.company?.name}</p>
-        </div>
+      {/* Footer */}
+      <div className="border-t border-surface-200 dark:border-surface-800 p-3 space-y-2">
+        <button
+          onClick={toggle}
+          className={`flex items-center gap-3 w-full rounded-xl px-3 py-2.5 text-sm font-medium text-surface-500 hover:bg-surface-100 hover:text-surface-900 dark:text-surface-400 dark:hover:bg-surface-800 dark:hover:text-white transition-colors ${collapsed ? 'justify-center' : ''}`}
+          title={collapsed ? (theme === 'dark' ? 'Modo claro' : 'Modo oscuro') : undefined}
+        >
+          {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+          {!collapsed && <span>{theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}</span>}
+        </button>
+
+        {!collapsed && (
+          <div className="flex items-center gap-3 rounded-xl px-3 py-2.5">
+            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-xs font-bold text-white">
+              {initials}
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-medium text-surface-900 dark:text-white">{user?.name}</p>
+              <p className="truncate text-xs text-surface-500">{user?.company?.name}</p>
+            </div>
+          </div>
+        )}
+
         <button
           onClick={logout}
-          className="w-full px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg text-left transition-colors"
+          className={`flex items-center gap-3 w-full rounded-xl px-3 py-2.5 text-sm font-medium text-surface-500 hover:bg-danger-500/10 hover:text-danger-500 transition-colors ${collapsed ? 'justify-center' : ''}`}
+          title={collapsed ? 'Cerrar sesion' : undefined}
         >
-          Cerrar sesion
+          <LogOut size={18} />
+          {!collapsed && <span>Cerrar sesion</span>}
         </button>
       </div>
-    </aside>
-  );
+    </>
+  )
+
+  return (
+    <>
+      {/* Mobile header */}
+      <div className="fixed top-0 left-0 right-0 z-50 flex h-14 items-center justify-between border-b border-surface-200 bg-white/80 px-4 backdrop-blur-xl dark:border-surface-800 dark:bg-surface-950/80 md:hidden">
+        <span className="text-lg font-extrabold tracking-tight">
+          <span className="text-surface-900 dark:text-white">wallet</span>
+          <span className="text-brand-500">BIND</span>
+        </span>
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="rounded-lg p-2 text-surface-600 hover:bg-surface-100 dark:text-surface-400 dark:hover:bg-surface-800"
+        >
+          <Menu size={20} />
+        </button>
+      </div>
+
+      {/* Mobile overlay */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-40 bg-black/40 md:hidden" onClick={() => setMobileOpen(false)} />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={`fixed top-0 left-0 z-50 flex h-full flex-col border-r border-surface-200 bg-white dark:border-surface-800 dark:bg-surface-900 transition-all duration-200 ${
+          collapsed ? 'w-[72px]' : 'w-64'
+        } ${mobileOpen ? 'translate-x-0' : '-translate-x-full'} md:relative md:translate-x-0`}
+      >
+        {sidebarContent}
+      </aside>
+    </>
+  )
 }

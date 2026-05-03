@@ -49,12 +49,12 @@ export default function PaymentLinksPage() {
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Links de Pago</h1>
-          <p className="text-sm text-slate-400 mt-1">Genera links para cobrar a clientes sin integracion tecnica</p>
+          <h1 className="text-2xl font-bold text-surface-900 dark:text-white">Links de Pago</h1>
+          <p className="text-sm text-surface-500 mt-1">Genera links para cobrar a clientes sin integracion tecnica</p>
         </div>
         <button
           onClick={() => setShowCreate(!showCreate)}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium rounded-lg transition-colors"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -72,28 +72,28 @@ export default function PaymentLinksPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
-          <p className="text-xs text-slate-500 uppercase">Links activos</p>
-          <p className="text-2xl font-bold text-white mt-1">{links.filter(l => l.status === 'active').length}</p>
+        <div className="bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-xl p-4">
+          <p className="text-xs text-surface-400 uppercase">Links activos</p>
+          <p className="text-2xl font-bold text-surface-900 dark:text-white mt-1">{links.filter(l => l.status === 'active').length}</p>
         </div>
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
-          <p className="text-xs text-slate-500 uppercase">Cobros recibidos</p>
+        <div className="bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-xl p-4">
+          <p className="text-xs text-surface-400 uppercase">Cobros recibidos</p>
           <p className="text-2xl font-bold text-green-400 mt-1">{links.reduce((s, l) => s + l.payments, 0)}</p>
         </div>
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
-          <p className="text-xs text-slate-500 uppercase">Monto cobrado</p>
-          <p className="text-2xl font-bold text-white mt-1">{money(links.filter(l => l.status === 'paid').reduce((s, l) => s + (l.amount || 0), 0))}</p>
+        <div className="bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-xl p-4">
+          <p className="text-xs text-surface-400 uppercase">Monto cobrado</p>
+          <p className="text-2xl font-bold text-surface-900 dark:text-white mt-1">{money(links.filter(l => l.status === 'paid').reduce((s, l) => s + (l.amount || 0), 0))}</p>
         </div>
       </div>
 
       {/* Links list */}
       <div className="space-y-3">
         {links.map((link) => (
-          <div key={link.id} className="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-slate-700 transition-colors">
+          <div key={link.id} className="bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-xl p-5 hover:border-surface-300 dark:hover:border-surface-700 transition-colors">
             <div className="flex items-start justify-between">
               <div>
                 <div className="flex items-center gap-2">
-                  <p className="text-white font-medium">{link.title}</p>
+                  <p className="text-surface-900 dark:text-white font-medium">{link.title}</p>
                   <span className={`text-xs px-2 py-0.5 rounded-full ${
                     link.status === 'active' ? 'bg-green-500/10 text-green-400' :
                     link.status === 'paid' ? 'bg-blue-500/10 text-blue-400' :
@@ -102,14 +102,14 @@ export default function PaymentLinksPage() {
                     {link.status === 'active' ? 'Activo' : link.status === 'paid' ? 'Cobrado' : 'Expirado'}
                   </span>
                 </div>
-                <p className="text-xs text-slate-500 mt-1">Creado {link.createdAt} &middot; {link.payments} pago{link.payments !== 1 ? 's' : ''}</p>
+                <p className="text-xs text-surface-400 mt-1">Creado {link.createdAt} &middot; {link.payments} pago{link.payments !== 1 ? 's' : ''}</p>
               </div>
-              <p className="text-lg font-bold text-white">
+              <p className="text-lg font-bold text-surface-900 dark:text-white">
                 {link.amount ? money(link.amount, link.currency) : 'Monto libre'}
               </p>
             </div>
             <div className="mt-3 flex items-center gap-2">
-              <div className="flex-1 px-3 py-1.5 bg-slate-800 rounded-lg text-xs text-slate-400 font-mono truncate">
+              <div className="flex-1 px-3 py-1.5 bg-surface-100 dark:bg-surface-800 rounded-lg text-xs text-surface-500 font-mono truncate">
                 {link.url}
               </div>
               <button
@@ -117,12 +117,12 @@ export default function PaymentLinksPage() {
                 className={`px-3 py-1.5 text-xs rounded-lg font-medium transition-colors ${
                   copied === link.id
                     ? 'bg-green-500/10 text-green-400'
-                    : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                    : 'bg-surface-200 dark:bg-surface-800 text-surface-600 dark:text-surface-300 hover:bg-surface-300 dark:hover:bg-surface-700'
                 }`}
               >
                 {copied === link.id ? 'Copiado!' : 'Copiar'}
               </button>
-              <button className="px-3 py-1.5 text-xs bg-slate-800 text-slate-300 rounded-lg hover:bg-slate-700 transition-colors">
+              <button className="px-3 py-1.5 text-xs bg-surface-200 dark:bg-surface-800 text-surface-600 dark:text-surface-300 rounded-lg hover:bg-surface-300 dark:hover:bg-surface-700 transition-colors">
                 Compartir
               </button>
             </div>
@@ -143,10 +143,10 @@ function CreateLinkForm({ onCreate, onCancel }: {
   const [currency, setCurrency] = useState('ARS');
 
   return (
-    <div className="bg-slate-900 border border-blue-500/30 rounded-2xl p-6">
+    <div className="bg-white dark:bg-surface-900 border border-brand-500/30 rounded-2xl p-6">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-white">Crear link de pago</h2>
-        <button onClick={onCancel} className="text-slate-500 hover:text-white">
+        <h2 className="text-lg font-semibold text-surface-900 dark:text-white">Crear link de pago</h2>
+        <button onClick={onCancel} className="text-surface-400 hover:text-surface-900 dark:hover:text-white">
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -154,21 +154,21 @@ function CreateLinkForm({ onCreate, onCancel }: {
       </div>
       <form onSubmit={(e) => { e.preventDefault(); onCreate({ title, amount: fixedAmount ? Number(amount) : null, currency }); }} className="space-y-4">
         <div>
-          <label className="block text-sm text-slate-400 mb-1">Titulo / Concepto</label>
+          <label className="block text-sm text-surface-500 mb-1">Titulo / Concepto</label>
           <input type="text" value={title} onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2.5 bg-surface-100 dark:bg-surface-800 border border-surface-300 dark:border-surface-700 rounded-lg text-surface-900 dark:text-white placeholder-surface-400 focus:outline-none focus:ring-2 focus:ring-brand-500"
             placeholder="Factura, servicio, donacion..." required />
         </div>
 
         <div>
-          <label className="block text-sm text-slate-400 mb-1">Tipo de monto</label>
+          <label className="block text-sm text-surface-500 mb-1">Tipo de monto</label>
           <div className="flex gap-2">
             <button type="button" onClick={() => setFixedAmount(true)}
-              className={`flex-1 py-2.5 text-sm rounded-lg border font-medium transition-colors ${fixedAmount ? 'border-blue-500 bg-blue-500/10 text-blue-400' : 'border-slate-700 bg-slate-800 text-slate-400'}`}>
+              className={`flex-1 py-2.5 text-sm rounded-lg border font-medium transition-colors ${fixedAmount ? 'border-brand-500 bg-brand-500/10 text-brand-600 dark:text-brand-400' : 'border-surface-300 dark:border-surface-700 bg-surface-100 dark:bg-surface-800 text-surface-500'}`}>
               Monto fijo
             </button>
             <button type="button" onClick={() => setFixedAmount(false)}
-              className={`flex-1 py-2.5 text-sm rounded-lg border font-medium transition-colors ${!fixedAmount ? 'border-blue-500 bg-blue-500/10 text-blue-400' : 'border-slate-700 bg-slate-800 text-slate-400'}`}>
+              className={`flex-1 py-2.5 text-sm rounded-lg border font-medium transition-colors ${!fixedAmount ? 'border-brand-500 bg-brand-500/10 text-brand-600 dark:text-brand-400' : 'border-surface-300 dark:border-surface-700 bg-surface-100 dark:bg-surface-800 text-surface-500'}`}>
               Monto libre
             </button>
           </div>
@@ -177,15 +177,15 @@ function CreateLinkForm({ onCreate, onCancel }: {
         {fixedAmount && (
           <div className="grid grid-cols-3 gap-4">
             <div className="col-span-2">
-              <label className="block text-sm text-slate-400 mb-1">Monto</label>
+              <label className="block text-sm text-surface-500 mb-1">Monto</label>
               <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)}
-                className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2.5 bg-surface-100 dark:bg-surface-800 border border-surface-300 dark:border-surface-700 rounded-lg text-surface-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
                 placeholder="0.00" min="0.01" step="0.01" required />
             </div>
             <div>
-              <label className="block text-sm text-slate-400 mb-1">Moneda</label>
+              <label className="block text-sm text-surface-500 mb-1">Moneda</label>
               <select value={currency} onChange={(e) => setCurrency(e.target.value)}
-                className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                className="w-full px-4 py-2.5 bg-surface-100 dark:bg-surface-800 border border-surface-300 dark:border-surface-700 rounded-lg text-surface-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500">
                 <option value="ARS">ARS</option>
                 <option value="USD">USD</option>
               </select>
@@ -193,7 +193,7 @@ function CreateLinkForm({ onCreate, onCancel }: {
           </div>
         )}
 
-        <button type="submit" className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">
+        <button type="submit" className="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-lg transition-colors">
           Crear link de pago
         </button>
       </form>

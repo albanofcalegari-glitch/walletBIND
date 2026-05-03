@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/api';
 import { money, fullDate } from '@/lib/format';
+import { ArrowLeft, Download } from 'lucide-react';
 
 export default function AccountDetailPage() {
   const params = useParams();
@@ -27,7 +28,7 @@ export default function AccountDetailPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-500" />
       </div>
     );
   }
@@ -35,35 +36,33 @@ export default function AccountDetailPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="flex items-center gap-3">
-        <Link href="/" className="text-slate-500 hover:text-white transition-colors">
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
+        <Link href="/accounts" className="text-surface-400 hover:text-surface-900 dark:hover:text-white transition-colors">
+          <ArrowLeft size={20} />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-white">Detalle de Cuenta</h1>
-          <p className="text-sm text-slate-400">Wallet {id.slice(0, 8)}...</p>
+          <h1 className="text-2xl font-bold text-surface-900 dark:text-white">Detalle de Cuenta</h1>
+          <p className="text-sm text-surface-400 mt-0.5">Wallet {id.slice(0, 8)}...</p>
         </div>
       </div>
 
       {balance && (
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-          <p className="text-sm text-slate-500 uppercase tracking-wider">Saldo actual</p>
-          <p className="text-4xl font-bold text-white mt-1">{money(Number(balance.balance), balance.currency)}</p>
-          <p className="text-sm text-slate-500 mt-1">{balance.currency}</p>
+        <div className="bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-2xl p-6">
+          <p className="text-xs text-surface-400 uppercase tracking-wider">Saldo actual</p>
+          <p className="text-4xl font-bold text-brand-600 dark:text-brand-400 mt-1">{money(Number(balance.balance), balance.currency)}</p>
+          <p className="text-sm text-surface-400 mt-1">{balance.currency}</p>
         </div>
       )}
 
       {movements && (
         <>
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
-            <div className="px-5 py-4 border-b border-slate-800">
-              <h2 className="text-lg font-semibold text-white">Movimientos</h2>
-              <p className="text-xs text-slate-500">{movements.pagination.total} movimientos totales</p>
+          <div className="bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-2xl overflow-hidden">
+            <div className="px-5 py-4 border-b border-surface-200 dark:border-surface-800">
+              <h2 className="text-lg font-semibold text-surface-900 dark:text-white">Movimientos</h2>
+              <p className="text-xs text-surface-400">{movements.pagination.total} movimientos totales</p>
             </div>
             <table className="w-full">
               <thead>
-                <tr className="border-b border-slate-800 text-xs text-slate-500">
+                <tr className="border-b border-surface-200 dark:border-surface-800 text-xs text-surface-400">
                   <th className="text-left px-5 py-3 font-medium">Fecha</th>
                   <th className="text-left px-5 py-3 font-medium">Descripcion</th>
                   <th className="text-left px-5 py-3 font-medium">Tipo</th>
@@ -74,28 +73,26 @@ export default function AccountDetailPage() {
               </thead>
               <tbody>
                 {movements.data.map((m: any) => (
-                  <tr key={m.id} className="border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors">
-                    <td className="px-5 py-3 text-sm text-slate-400">{fullDate(m.date)}</td>
-                    <td className="px-5 py-3 text-sm text-white">{m.description || '-'}</td>
+                  <tr key={m.id} className="border-b border-surface-100 dark:border-surface-800/50 hover:bg-surface-50 dark:hover:bg-surface-800/30 transition-colors">
+                    <td className="px-5 py-3 text-sm text-surface-500 dark:text-surface-400">{fullDate(m.date)}</td>
+                    <td className="px-5 py-3 text-sm text-surface-900 dark:text-white">{m.description || '-'}</td>
                     <td className="px-5 py-3">
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">{m.type}</span>
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-surface-100 dark:bg-surface-800 text-surface-500 dark:text-surface-400">{m.type}</span>
                     </td>
-                    <td className={`px-5 py-3 text-sm text-right font-medium ${m.sign === 'credit' ? 'text-green-400' : 'text-red-400'}`}>
+                    <td className={`px-5 py-3 text-sm text-right font-medium ${m.sign === 'credit' ? 'text-success-600 dark:text-success-400' : 'text-danger-500'}`}>
                       {m.sign === 'credit' ? '+' : '-'}{money(Number(m.amount))}
                     </td>
-                    <td className="px-5 py-3 text-sm text-right text-slate-400">{money(Number(m.balanceAfter))}</td>
+                    <td className="px-5 py-3 text-sm text-right text-surface-500 dark:text-surface-400">{money(Number(m.balanceAfter))}</td>
                     <td className="px-5 py-3 text-right">
-                      <button className="p-1.5 text-slate-500 hover:text-white rounded-lg hover:bg-slate-800 transition-colors" title="Descargar comprobante">
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
+                      <button className="p-1.5 text-surface-400 hover:text-surface-900 dark:hover:text-white rounded-lg hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors" title="Descargar comprobante">
+                        <Download size={16} />
                       </button>
                     </td>
                   </tr>
                 ))}
                 {movements.data.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="px-5 py-8 text-center text-slate-500">Sin movimientos</td>
+                    <td colSpan={6} className="px-5 py-8 text-center text-surface-400">Sin movimientos</td>
                   </tr>
                 )}
               </tbody>
@@ -107,17 +104,17 @@ export default function AccountDetailPage() {
               <button
                 onClick={() => setPage(Math.max(1, page - 1))}
                 disabled={page <= 1}
-                className="px-4 py-2 text-sm bg-slate-800 text-slate-300 rounded-lg disabled:opacity-30 hover:bg-slate-700 transition-colors"
+                className="px-4 py-2 text-sm bg-surface-100 dark:bg-surface-800 text-surface-600 dark:text-surface-300 rounded-lg disabled:opacity-30 hover:bg-surface-200 dark:hover:bg-surface-700 transition-colors"
               >
                 Anterior
               </button>
-              <span className="px-4 py-2 text-sm text-slate-500">
+              <span className="px-4 py-2 text-sm text-surface-400">
                 {page} / {movements.pagination.pages}
               </span>
               <button
                 onClick={() => setPage(Math.min(movements.pagination.pages, page + 1))}
                 disabled={page >= movements.pagination.pages}
-                className="px-4 py-2 text-sm bg-slate-800 text-slate-300 rounded-lg disabled:opacity-30 hover:bg-slate-700 transition-colors"
+                className="px-4 py-2 text-sm bg-surface-100 dark:bg-surface-800 text-surface-600 dark:text-surface-300 rounded-lg disabled:opacity-30 hover:bg-surface-200 dark:hover:bg-surface-700 transition-colors"
               >
                 Siguiente
               </button>
